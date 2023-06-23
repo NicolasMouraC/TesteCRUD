@@ -1,5 +1,6 @@
 import HomePage from '../pages/HomePage/HomePage.js';
-import CarForm from '../pages/CarForm.js/CarForm.js';
+import CreateCarForm from '../pages/CarForm.js/CreateCarForm/CreateCarForm.js';
+import EditCarForm from '../pages/CarForm.js/EditCarForm.js/EditCarForm.js';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 const WebStack = () => {
@@ -11,8 +12,12 @@ const WebStack = () => {
           element={<HomePage />}
         />
         <Route
-          path="/edit"
-          element={<CarForm />}
+          path="/edit/:id"
+          element={<EditCarForm />}
+        />
+        <Route
+          path="/create"
+          element={<CreateCarForm />}
         />
       </Routes>
     </Router>

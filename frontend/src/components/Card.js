@@ -1,24 +1,29 @@
-const Card = () => {
+import Button from "react-bootstrap/Button";
+import { useNavigate } from "react-router-dom";
+
+const Card = ({info}) => {
+    const navigate = useNavigate();
+
     return (
         <div className="container my-3 border border-1 rounded w-100">
             <div className="d-flex justify-content-between">
                 <div className="d-grid align-items-center">
-                    <span>Marca: marca</span>
-                    <span>Modelo: modelo</span>
+                    <span>Marca: {info.Marca}</span>
+                    <span>Modelo: {info.Modelo}</span>
                 </div>
 
                 <div className="d-grid align-items-center">
-                    <span>Marca: marca</span>
-                    <span>Modelo: modelo</span>
+                    <span>Motor: {info.Motor}</span>
+                    <span>Tipo de combustível: {info.TipoCombustivel}</span>
                 </div>
 
                 <div className="d-grid align-items-center">
-                    <span>Marca: marca</span>                    
-                    <span>Modelo: modelo</span>
+                    <span>Cor: {info.Cor}</span>                    
+                    <span>Categoria: {info.Categoria}</span>
                 </div>
-                <button className="btn btn-info text-end m-3">
+                <Button variant="primary" type="submit" onClick={() => navigate(`/edit/${info.id}`, { state: { id: info.id } })}>
                     Editar
-                </button>
+                </Button>
             </div>
         </div>
     )

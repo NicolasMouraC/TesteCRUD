@@ -35,7 +35,7 @@ class CarroController extends Controller
     public function update(Request $request, string $id)
     {
         $carro = Carro::findOrFail($id);
-        $Carro->update($request->all());
+        $carro->update($request->all());
     }
 
 

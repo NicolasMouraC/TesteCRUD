@@ -2,8 +2,29 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Card from '../../components/Card.js';
 import DropdownMenu from '../../components/Dropdown.js';
+import { getCarsAPI } from '../../services/api.js';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectCars, selectIsCarsLoaded, setCars, toggleIsCarsLoaded } from '../../redux/slices/carsSlice.js';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import SpinnerComponent from '../../components/SpinnerComponent.js';
 
 const HomePage = () => {
+    const dispatch = useDispatch();
+    const isLoaded = useSelector(selectIsCarsLoaded);
+    const cars = useSelector(selectCars);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        async function data() {
+            dispatch(toggleIsCarsLoaded());
+            const cars = await getCarsAPI();
+            dispatch(setCars({ cars: cars }))
+        };
+
+        data()
+    }, [])
+
     return (
         <div className="container-fluid p-5 border border-1 rounded w-100">
             <div className="border border-1 rounded d-flex align-items-center">
@@ -16,15 +37,19 @@ const HomePage = () => {
                     />
                 </InputGroup>
                 <div className="d-flex  w-50 flex-wrap justify-content-end m-3">
-                    <button className="btn btn-info">
+                    <button className="btn btn-info" onClick={() => navigate('/create')}>
                         Criar novo registro
                     </button>
                 </div>
             </div>
-            <Card />
-            <Card />
-            <Card />
-            <Card />
+            {
+                isLoaded ?
+                    cars.map((el, idx) => {
+                        return <Card info={el} key={idx}/>
+                    })
+                : 
+                    <SpinnerComponent />
+            }
         </div>
     )
 }
