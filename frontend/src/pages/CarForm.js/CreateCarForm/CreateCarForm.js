@@ -4,8 +4,13 @@ import Select from 'react-select';
 import { BrandOptions, CategoryOptions, ColorOptions, EngineOptions, FuelTypeOptions, NumberOfSeatsOptions } from '../FormOptions.js';
 import { useState } from 'react';
 import { createCarAPI } from '../../../services/api.js';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { addMessage } from '../../../redux/slices/messagesSlice.js';
 
 const CreateCarForm = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [formState, setFormState] = useState({
         model: "",
@@ -32,7 +37,17 @@ const CreateCarForm = () => {
 
     const handleButtonClick = (e) => {
         e.preventDefault();
+
+        for (let key in formState) {
+            if (formState[key] === "") {
+                dispatch(addMessage({ title: "Erro", message: "Preencha todos os campos" }));
+                return;
+            }
+        }
+        dispatch(addMessage({ title: "Sucesso", message: "Carro adicionado com sucesso" }));
+
         createCarAPI(formState);
+        navigate('/');
     }
 
     return (

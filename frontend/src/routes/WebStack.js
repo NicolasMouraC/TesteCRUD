@@ -3,24 +3,20 @@ import CreateCarForm from '../pages/CarForm.js/CreateCarForm/CreateCarForm.js';
 import EditCarForm from '../pages/CarForm.js/EditCarForm.js/EditCarForm.js';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { selectErrors } from '../redux/slices/errorsSlice.js';
-import ErrorMessage from '../components/ErrorMessage.js';
+import { selectMessages } from '../redux/slices/messagesSlice.js';
+import MessagePopUp from '../components/MessagePopUp.js';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 
 const WebStack = () => {
-  const err = useSelector(selectErrors);
+  const messages = useSelector(selectMessages);
 
   return (
     <Router>
       {
-          err.length !== 0  && 
+          messages.length !== 0  && 
           <ToastContainer position='top-end'>
               {
-                  err.map(error => {
-                      return (
-                          <ErrorMessage title={error.title} message={error.message} errorId={error.id} key={error.id}/>
-                      )
-                  })
+                  messages.map(message => <MessagePopUp title={message.title} message={message.message} messageId={message.id} key={message.id}/>).reverse()
               }
           </ToastContainer>
       }

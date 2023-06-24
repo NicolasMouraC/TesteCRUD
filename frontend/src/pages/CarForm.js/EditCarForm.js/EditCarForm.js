@@ -10,13 +10,15 @@ import { useDispatch } from 'react-redux';
 import { getCarAPI } from '../../../services/api.js';
 import { useLocation } from 'react-router-dom';
 import { toggleIsCarsLoaded } from '../../../redux/slices/carsSlice.js';
-import { addError } from '../../../redux/slices/errorsSlice.js';
+import { addMessage } from '../../../redux/slices/messagesSlice.js';
 import SpinnerComponent from '../../../components/SpinnerComponent.js';
+import { useNavigate } from 'react-router-dom';
 
 const EditCarForm = () => {
     const { state } = useLocation();
     const { id } = state;
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [formState, setFormState] = useState({
         id: null,
         model: "",
@@ -46,18 +48,21 @@ const EditCarForm = () => {
 
         for (let key in formState) {
             if (formState[key] === "") {
-                dispatch(addError({ title: "Erro", message: "Preencha todos os campos" }));
+                dispatch(addMessage({ title: "Erro", message: "Preencha todos os campos" }));
                 return;
             }
         }
-
+        dispatch(addMessage({ title: "Sucesso", message: "Carro editado com sucesso" }));
         editCarAPI(formState);
+        navigate('/');
     }
 
     const handleDeleteButtonClick = (e) => {
         e.preventDefault();
 
+        dispatch(addMessage({ title: "Sucesso", message: "Carro deletado com sucesso" }))
         deleteCarAPI(formState.id);
+        navigate('/');
     }
 
     useEffect(() => {
