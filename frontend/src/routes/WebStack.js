@@ -1,6 +1,6 @@
 import HomePage from '../pages/HomePage/HomePage.js';
-import CreateCarForm from '../pages/CarForm.js/CreateCarForm/CreateCarForm.js';
-import EditCarForm from '../pages/CarForm.js/EditCarForm.js/EditCarForm.js';
+import CreateCarForm from '../pages/CarForm/CreateCarForm/CreateCarForm.js';
+import EditCarForm from '../pages/CarForm/EditCarForm.js/EditCarForm.js';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectMessages } from '../redux/slices/messagesSlice.js';

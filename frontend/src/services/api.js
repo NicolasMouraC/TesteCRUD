@@ -34,8 +34,7 @@ export const createCarAPI = async ({model, year, numSeats, fuelType, category, b
 
     const res = response;
 
-    console.log(res)
-    //return res;
+    return res;
 }
 
 export const editCarAPI = async ({id, model, year, numSeats, fuelType, category, brand, engine, color}) => {
@@ -59,8 +58,7 @@ export const editCarAPI = async ({id, model, year, numSeats, fuelType, category,
 
     const res = response;
 
-    console.log(res)
-    //return res;
+    return res;
 }
 
 export const getCarAPI = async (id) => {
@@ -84,4 +82,17 @@ export const deleteCarAPI = async (id) => {
           'Content-Type': 'application/json',
         },
     })
+}
+
+export const getFilteredCarsAPI = async (filter, searchTerm) => {
+  const response = await fetch(`${baseURL}/carros/${filter}/${searchTerm}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+  });
+
+  const res = await response.json();
+  return res;
 }
