@@ -1,17 +1,20 @@
-import { useState } from 'react';
 import Toast from 'react-bootstrap/Toast';
+import { useDispatch } from 'react-redux';
+import { deleteError } from '../redux/slices/errorsSlice';
 
-const ErrorMessage = () => {
-    const [showA, setShowA] = useState(true);
-    const toggleShowA = () => setShowA(!showA);
+const ErrorMessage = ({title, message, errorId}) => {
+  const dispatch = useDispatch();
+    const deleteThisError = () => {
+      dispatch(deleteError({ errorId: errorId }))
+    };
 
     return (
-        <Toast show={showA} onClose={toggleShowA}>
+        <Toast onClose={deleteThisError}>
           <Toast.Header>
-            <strong className="me-auto">Bootstrap</strong>
+            <strong className="me-auto">{title}</strong>
             <small>11 mins ago</small>
           </Toast.Header>
-          <Toast.Body>Woohoo, you're reading this text in a Toast!</Toast.Body>
+          <Toast.Body>{message}</Toast.Body>
         </Toast>
     )
 }
