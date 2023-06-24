@@ -25,24 +25,21 @@ class CarroController extends Controller
         return Carro::findOrFail($id);
     }
 
-
-    public function edit(string $id)
-    {
-        //
-    }
-
-
     public function update(Request $request, string $id)
     {
         $carro = Carro::findOrFail($id);
         $carro->update($request->all());
     }
 
+    public function search(string $filter, string $searchTerm) {
+        $result = Carro::where($filter, 'LIKE', '%' . $searchTerm . '%')->get();
+
+        return $result;
+    }
 
     public function destroy(string $id)
     {
         $carro = Carro::findOrFail($id);
         $carro->delete();
-        return "Success";
     }
 }

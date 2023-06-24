@@ -8,7 +8,7 @@ export const carsSlice = createSlice({
     },
     reducers: {
         toggleIsCarsLoaded: (state, action) => {
-            state.isCarsLoaded = (!state.isPostsLoaded)
+            state.isCarsLoaded = (false);
         },
         setCars: (state, action) => {
             state.cars = action.payload.cars
