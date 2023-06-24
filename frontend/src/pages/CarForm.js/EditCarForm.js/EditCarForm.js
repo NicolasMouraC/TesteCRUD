@@ -3,8 +3,6 @@ import Form from 'react-bootstrap/Form';
 import Accordion from 'react-bootstrap/Accordion';
 import Select from 'react-select';
 import Defect from '../../../components/Defect.js';
-import ErrorMessage from '../../../components/ErrorMessage.js';
-import ToastContainer from 'react-bootstrap/ToastContainer';
 import { BrandOptions, CategoryOptions, ColorOptions, EngineOptions, FuelTypeOptions, NumberOfSeatsOptions } from '../FormOptions.js';
 import { useEffect, useState } from 'react';
 import { editCarAPI, deleteCarAPI } from '../../../services/api.js';
@@ -12,13 +10,15 @@ import { useDispatch } from 'react-redux';
 import { getCarAPI } from '../../../services/api.js';
 import { useLocation } from 'react-router-dom';
 import { toggleIsCarsLoaded } from '../../../redux/slices/carsSlice.js';
+import { addMessage } from '../../../redux/slices/messagesSlice.js';
 import SpinnerComponent from '../../../components/SpinnerComponent.js';
+import { useNavigate } from 'react-router-dom';
 
 const EditCarForm = () => {
     const { state } = useLocation();
     const { id } = state;
     const dispatch = useDispatch();
-    const [err, setErr] = useState("");
+    const navigate = useNavigate();
     const [formState, setFormState] = useState({
         id: null,
         model: "",
@@ -48,19 +48,21 @@ const EditCarForm = () => {
 
         for (let key in formState) {
             if (formState[key] === "") {
-                console.log(err)
-                setErr("Err")
+                dispatch(addMessage({ title: "Erro", message: "Preencha todos os campos" }));
                 return;
             }
         }
-
+        dispatch(addMessage({ title: "Sucesso", message: "Carro editado com sucesso" }));
         editCarAPI(formState);
+        navigate('/');
     }
 
     const handleDeleteButtonClick = (e) => {
         e.preventDefault();
 
+        dispatch(addMessage({ title: "Sucesso", message: "Carro deletado com sucesso" }))
         deleteCarAPI(formState.id);
+        navigate('/');
     }
 
     useEffect(() => {
@@ -87,14 +89,7 @@ const EditCarForm = () => {
     return (
         <>
         {   
-            
             formState.id !== null ?
-                <>
-                {
-                    err !== "" && <ToastContainer position='top-end'>
-                        <ErrorMessage />
-                    </ToastContainer>
-                }
                 <div className="container-fluid p-5 border border-1 rounded">
                     <Form className='border border-1 rounded'>
                         <div className='d-flex align w-100'>
@@ -160,7 +155,6 @@ const EditCarForm = () => {
                         </div>
                     </Form>
                 </div>
-                </>
             :
                 <SpinnerComponent/>
         }
