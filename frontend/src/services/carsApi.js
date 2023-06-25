@@ -61,6 +61,15 @@ export const editCarAPI = async ({id, model, year, numSeats, fuelType, category,
     return res;
 }
 
+export const updateCarImageAPI = async ({id, image}) => {
+  console.log(image)
+  await fetch(`${baseURL}/carros/foto/${id}`, {
+      method: 'POST',
+      body: image
+  });
+
+}
+
 export const getCarAPI = async (id) => {
     const response = await fetch(`${baseURL}/carros/${id}`, {
         method: 'GET',
