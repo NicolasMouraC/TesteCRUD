@@ -1,6 +1,7 @@
 import HomePage from '../pages/HomePage/HomePage.js';
 import CreateCarForm from '../pages/CarForm/CreateCarForm/CreateCarForm.js';
 import EditCarForm from '../pages/CarForm/EditCarForm.js/EditCarForm.js';
+import NewDefect from '../pages/NewDefect/NewDefect.js';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectMessages } from '../redux/slices/messagesSlice.js';
@@ -32,6 +33,10 @@ const WebStack = () => {
         <Route
           path="/create"
           element={<CreateCarForm />}
+        />
+        <Route
+          path="/newdefect/:carId"
+          element={<NewDefect />}
         />
       </Routes>
     </Router>

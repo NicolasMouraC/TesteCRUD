@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('carros', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('Modelo');
             $table->string('Ano');
             $table->string('NumAssentos');
@@ -23,6 +23,17 @@ return new class extends Migration
             $table->string('Cor');
             $table->timestamps();
         });
+
+        Schema::create('defeitos', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('carro_id');
+            $table->string('Titulo');
+            $table->string('Descricao');
+            $table->string('Gravidade');
+            $table->timestamps();
+
+            $table->foreign('carro_id')->references('id')->on('carros')->onDelete('cascade');
+        });
     }
 
     /**
@@ -31,5 +42,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('carros');
+        Schema::dropIfExists('defeitos');
     }
 };

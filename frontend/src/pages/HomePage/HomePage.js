@@ -2,7 +2,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Card from '../../components/Card.js';
 import DropdownMenu from '../../components/DropdownMenu.js';
-import { getCarsAPI, getFilteredCarsAPI } from '../../services/api.js';
+import { getCarsAPI, getFilteredCarsAPI } from '../../services/carsApi.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectCars, selectIsCarsLoaded, setCars, toggleIsCarsLoaded } from '../../redux/slices/carsSlice.js';
 import { selectFilter } from '../../redux/slices/filterSlice.js';
@@ -21,14 +21,14 @@ const HomePage = () => {
     useEffect(() => {
         async function getTotalData() {
             dispatch(toggleIsCarsLoaded());
-            const cars = await getCarsAPI();
-            dispatch(setCars({ cars: cars }));
+            const carsFromAPI = await getCarsAPI();
+            dispatch(setCars({ cars: carsFromAPI }));
         };
 
         async function getFilteredData() {
             dispatch(toggleIsCarsLoaded());
-            const cars = await getFilteredCarsAPI(filter, searchTerm);
-            dispatch(setCars({ cars: cars }));
+            const carsFromAPI = await getFilteredCarsAPI(filter, searchTerm);
+            dispatch(setCars({ cars: carsFromAPI }));
         }
 
         searchTerm === "" ? getTotalData() : getFilteredData();
@@ -55,9 +55,7 @@ const HomePage = () => {
             </div>
             {
                 isLoaded ?
-                    cars.map((el, idx) => {
-                        return <Card info={el} key={idx}/>
-                    })
+                    cars.map((el, idx) => <Card info={el} key={idx}/>)
                 : 
                     <SpinnerComponent />
             }
