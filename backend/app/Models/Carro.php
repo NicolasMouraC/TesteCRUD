@@ -9,6 +9,7 @@ use App\Models\Defeito;
 class Carro extends Model
 {
     protected $fillable = [
+        'Imagem_url',
         'Modelo',
         'Ano',
         'NumAssentos',
@@ -22,5 +23,12 @@ class Carro extends Model
     public function defeitos() 
     {
         return $this->hasMany(Defeito::class);
+    }
+
+    public function getImagemUrlAttribute()
+    {
+        if ($this->imagem) {
+            return Storage::disk('local')->url($this->Imagem_url);
+        }
     }
 }

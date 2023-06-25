@@ -1,7 +1,8 @@
 import Button from "react-bootstrap/Button";
-import { json, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Accordion from 'react-bootstrap/Accordion';
 import Dropdown from 'react-bootstrap/Dropdown';
+import Image from 'react-bootstrap/Image';
 import Defect from "./Defect";
 import { useState, useEffect} from "react";
 import { getDefectsAPI } from '../services/defectsApi.js';
@@ -34,6 +35,7 @@ const Card = ({info}) => {
     return (
         <div className="container my-3 border border-1 rounded w-100 bg-primary-subtle p-3">
             <div className="d-flex justify-content-between">
+                    <Image src={`http://localhost:8000/storage/${info.Imagem_url}`} style={{ width: 100, height: 100 }} rounded/>
                 <div className="d-grid align-items-center gap-3">
                     <div><span className="fw-bold">Modelo: </span>{info.Modelo}</div>
                     <div><span className="fw-bold">Marca: </span>{info.Marca}</div>

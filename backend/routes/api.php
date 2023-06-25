@@ -7,6 +7,7 @@ Route::get('carros', [CarroController::class, 'index']);
 Route::get('carros/{id}', [CarroController::class, 'show']); 
 Route::get('carros/{filter}/{searchTerm}', [CarroController::class, 'search']); 
 Route::post('carros', [CarroController::class, 'store']);
+Route::post('carros/foto/{id}', [CarroController::class, 'updatePicture']);
 Route::put('carros/{id}', [CarroController::class, 'update']);
 Route::delete('carros/{id}', [CarroController::class, 'destroy']); 
 

@@ -4,20 +4,23 @@ import Select from 'react-select';
 import { BrandOptions, CategoryOptions, ColorOptions, EngineOptions, FuelTypeOptions, NumberOfSeatsOptions } from '../FormOptions.js';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { editCarAPI, deleteCarAPI, getCarAPI } from '../../../services/carsApi.js';
+import { editCarAPI, deleteCarAPI, getCarAPI, updateCarImageAPI } from '../../../services/carsApi.js';
 import { useLocation } from 'react-router-dom';
 import { toggleIsCarsLoaded } from '../../../redux/slices/carsSlice.js';
 import { addMessage } from '../../../redux/slices/messagesSlice.js';
 import SpinnerComponent from '../../../components/SpinnerComponent.js';
 import { useNavigate } from 'react-router-dom';
+import Image from 'react-bootstrap/esm/Image.js';
 
 const EditCarForm = () => {
+    const [ imagePreview, setImagePreview ] = useState('');
     const { state } = useLocation();
     const { id } = state;
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [formState, setFormState] = useState({
         id: null,
+        image: "",
         model: "",
         year: "",
         numSeats: "",
@@ -28,19 +31,38 @@ const EditCarForm = () => {
         color: ""
     });
 
+    const handleImagemChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreview(reader.result);
+            };
+            reader.readAsDataURL(file);
+            console.log(event.target.files[0])
+            setFormState(prev => {
+                return { ...prev, image: file };
+            })
+        }
+    };
+
     const handleFormChange = (event, name) => {
         if (event.hasOwnProperty('label')) {
           setFormState((prev) => {
             return { ...prev, [name]: event.value };
           });
         } else {
-            setFormState((prev) => {
-                return { ...prev, [name]: event.target.value };
-            });
+            if (name === 'image') {
+                handleImagemChange(event)
+            } else {
+                setFormState((prev) => {
+                    return { ...prev, [name]: event.target.value };
+                });
+            }
         }
     };
 
-    const handleEditButtonClick = (e) => {
+    const handleEditButtonClick = async (e) => {
         e.preventDefault();
 
         for (let key in formState) {
@@ -49,8 +71,15 @@ const EditCarForm = () => {
                 return;
             }
         }
+
+        const formData = new FormData();
+        formData.append('image', formState.image);
+
+
+        await editCarAPI(formState);
+        await updateCarImageAPI({ id: formState.id, image: formData })
         dispatch(addMessage({ title: "Sucesso", message: "Carro editado com sucesso" }));
-        editCarAPI(formState);
+        
         navigate('/');
     }
 
@@ -69,6 +98,7 @@ const EditCarForm = () => {
 
             setFormState({
                 id: response.id,
+                image: response.Imagem_url,
                 model: response.Modelo,
                 year: response.Ano,
                 numSeats: response.NumAssentos,
@@ -78,6 +108,8 @@ const EditCarForm = () => {
                 engine: response.Motor,
                 color: response.Cor
             })
+
+            setImagePreview(`http://localhost:8000/storage/${response.Imagem_url}`);
         };
 
         data()
@@ -89,6 +121,10 @@ const EditCarForm = () => {
             formState.id !== null ?
                 <div className="container-fluid p-5 border border-1 rounded">
                     <Form className='border border-1 rounded'>
+                        <div className='d-flex justify-content-center align-items-center'>
+                            <Image src={imagePreview} style={{ width: 150, height: 150 }} roundedCircle/>
+                            <input type="file" name="image" onChange={(e) => handleFormChange(e, "image")} id='file-id' className='w-25 ms-3'/>
+                        </div>
                         <div className='d-flex align w-100'>
                             <Form.Group className="mb-3 w-50 mx-3">
                                 <Form.Label>Modelo</Form.Label>
