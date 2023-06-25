@@ -28,6 +28,7 @@ export const CategoryOptions = [
 
 export const EngineOptions = [
     { value: '1.0', label: '1.0' },
+    { value: '1.2', label: '1.2' },
     { value: '1.4', label: '1.4' },
     { value: '1.6', label: '1.6' },
     { value: '1.8', label: '1.8' },
