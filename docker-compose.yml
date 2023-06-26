@@ -1,0 +1,45 @@
+version: '3'
+services:
+  laravel:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - 8000:80
+    volumes:
+      - ./backend:/var/www/html
+    depends_on:
+      - db
+    networks:
+      - my-network
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    ports:
+      - 3307:3306
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - my-network
+
+  react:
+    build:
+      context: ./frontend
+      dockerfile: dockerfile
+      environment:
+        - NODE_ENV=development
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/app
+  
+volumes:
+  db-data:
+
+networks:
+  my-network:

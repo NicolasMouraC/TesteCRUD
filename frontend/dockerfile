@@ -1,0 +1,17 @@
+# Use uma imagem base do Node.js
+FROM node:14-alpine
+
+# Crie um diretório de trabalho dentro do contêiner
+WORKDIR /app
+
+# Copie os arquivos do projeto para o contêiner
+COPY . /app
+
+# Instale as dependências do projeto
+RUN npm install
+
+# Exponha a porta 3000 para acessar o aplicativo React
+EXPOSE 3000
+
+# Comando para iniciar o servidor de desenvolvimento do React
+CMD ["npm", "start"]
