@@ -1,4 +1,4 @@
-const baseURL = 'http://localhost:8000/api';
+const baseURL = 'http://laravel:8000/api';
 
 export const getCarsAPI = async () => {
     const response = await fetch(`${baseURL}/carros`, {

@@ -1,4 +1,4 @@
-const baseURL = 'http://localhost:8000/api';
+const baseURL = 'http://laravel:8000/api';
 
 export const getDefectsAPI = async (id) => {
     const response = await fetch(`${baseURL}/defeitos/${id}`, {
